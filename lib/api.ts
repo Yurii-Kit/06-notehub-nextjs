@@ -8,8 +8,8 @@ axios.defaults.baseURL = 'https://notehub-public.goit.study/api/';
 axios.defaults.headers.common['Authorization'] = `Bearer ${myKey}`;
 
 export const fetchNotes = async (
-  keyword: string,
-  page: number,
+  keyword?: string,
+  page?: number,
   perPage: number = 12,
 ): Promise<FetchNoteResponse> => {
   const response: AxiosResponse<FetchNoteResponse> = await axios.get('notes', {
@@ -26,4 +26,9 @@ export const createNote = async (newNote: NoteFormValues): Promise<Note> => {
 export const deleteNote = async (id: string): Promise<Note> => {
   const response: AxiosResponse<Note> = await axios.delete(`notes/${id}`);
   return response.data;
+};
+
+export const getSingleNote = async (id: string) => {
+  const res = await axios.get<Note>(`/notes/${id}`);
+  return res.data;
 };
