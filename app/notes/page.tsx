@@ -7,8 +7,6 @@ import NotesClient from '@/app/notes/Notes.client';
 
 import { fetchNotes } from '@/lib/api';
 
-import css from './page.module.css';
-
 const Notes = async () => {
   // ✅ 1. Ініціалізуємо QueryClient на сервері
   const queryClient = new QueryClient();
@@ -23,14 +21,9 @@ const Notes = async () => {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <div className={css.app}>
-      <section>
-        {/* // ✅ 4. Обгортаємо клієнтський компонент у HydrationBoundary */}
-        <HydrationBoundary state={dehydratedState}>
-          <NotesClient />
-        </HydrationBoundary>
-      </section>
-    </div>
+    <HydrationBoundary state={dehydratedState}>
+      <NotesClient />
+    </HydrationBoundary>
   );
 };
 export default Notes;

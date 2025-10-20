@@ -1,49 +1,49 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Formik, Form, Field, ErrorMessage as FormikError } from "formik";
-import type { FormikHelpers } from "formik";
-import * as Yup from "yup";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Formik, Form, Field, ErrorMessage as FormikError } from 'formik';
+import type { FormikHelpers } from 'formik';
+import * as Yup from 'yup';
 
-import { createNote } from "../../services/noteService";
-import type { NoteFormValues, NoteTag } from "../../types/note";
-import css from "./NoteForm.module.css";
+import { createNote } from '@/lib/api';
+import type { NoteFormValues, NoteTag } from '../../types/note';
+import css from './NoteForm.module.css';
 
 interface NoteFormProps {
   onClose: () => void;
 }
 
 const tagOptions: NoteTag[] = [
-  "Todo",
-  "Work",
-  "Personal",
-  "Meeting",
-  "Shopping",
+  'Todo',
+  'Work',
+  'Personal',
+  'Meeting',
+  'Shopping',
 ];
 
 const validationSchema = Yup.object({
-  title: Yup.string().min(3).max(50).required("Title is required"),
+  title: Yup.string().min(3).max(50).required('Title is required'),
   content: Yup.string().max(500),
-  tag: Yup.mixed<NoteTag>().oneOf(tagOptions).required("Tag is required"),
+  tag: Yup.mixed<NoteTag>().oneOf(tagOptions).required('Tag is required'),
 });
 
 export default function NoteForm({ onClose }: NoteFormProps) {
   const initialValues: NoteFormValues = {
-    title: "",
-    content: "",
-    tag: "Todo",
+    title: '',
+    content: '',
+    tag: 'Todo',
   };
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
     mutationFn: (values: NoteFormValues) => createNote(values),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
       onClose();
     },
   });
 
   const handleSubmit = (
     values: NoteFormValues,
-    actions: FormikHelpers<NoteFormValues>
+    actions: FormikHelpers<NoteFormValues>,
   ) => {
     createMutation.mutate(values);
     actions.resetForm();
