@@ -2,6 +2,7 @@
 // import { deleteNote } from "@/lib/api";
 import type { Note } from '@/types/note';
 import css from './NoteList.module.css';
+import Link from 'next/link';
 
 interface NoteListProps {
   notes: Note[];
@@ -25,6 +26,12 @@ const NoteList = ({ notes }: NoteListProps) => {
           <p className={css.content}>{note.content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
+
+            {/* ✅ Додаємо посилання на сторінку деталей */}
+            <Link href={`/notes/${note.id}`} className={css.link}>
+              View details
+            </Link>
+
             <button
               className={css.button}
               // onClick={() => handleDelete(note.id)}
@@ -37,4 +44,5 @@ const NoteList = ({ notes }: NoteListProps) => {
     </ul>
   );
 };
+
 export default NoteList;
